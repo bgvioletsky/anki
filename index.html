@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>选择题界面</title>
+  <script src="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"></script>
+  <style>
+    /* 基础样式 */
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #F5F7FA;
+      color: #606266;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    
+    /* 进度条样式 */
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .progress-bar__text {
+      font-size: 0.9rem;
+      color: #909399;
+    }
+    
+    .progress-bar__track {
+      flex: 1;
+      height: 0.5rem;
+      background-color: #E4E7ED;
+      border-radius: 0.25rem;
+      overflow: hidden;
+    }
+    
+    .progress-bar__fill {
+      height: 100%;
+      background-color: #4A90E2;
+      border-radius: 0.25rem;
+      transition: width 0.3s ease;
+    }
+    
+    /* 标题样式 */
+    .quiz-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: bold;
+      color: #303133;
+      margin-bottom: 0.5rem;
+    }
+    
+    /* 题目卡片样式 */
+    .question-card {
+      background-color: white;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+    }
+    
+    .question-card:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+    
+    /* 题目类型标签 */
+    .question-type {
+      display: inline-flex;
+      align-items: center;
+      background-color: rgba(74, 144, 226, 0.1);
+      color: #4A90E2;
+      font-size: 0.8rem;
+      font-weight: medium;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      margin-right: 0.75rem;
+    }
+    
+    .question-text {
+      font-size: clamp(1.2rem, 2vw, 1.4rem);
+      font-weight: medium;
+      color: #303133;
+      margin: 0;
+    }
+    
+    /* 选项列表样式 */
+    .options {
+      list-style: none;
+      padding: 0;
+      margin: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    /* 选项样式 */
+    .option-container {
+      position: relative;
+      cursor: pointer;
+      padding: 1rem;
+      border: 1px solid #E4E7ED;
+      border-radius: 0.5rem;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+    }
+    
+    .option-container:hover {
+      border-color: rgba(74, 144, 226, 0.5);
+      transform: scale(1.02);
+    }
+    
+    .option-container input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+    
+    .option-checkbox {
+      position: relative;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 2px solid #C0C4CC;
+      border-radius: 50%;
+      margin-right: 0.75rem;
+      transition: all 0.2s ease;
+    }
+    
+    .option-checkbox::after {
+      content: "\f00c";
+      font-family: "FontAwesome";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      font-size: 0.75rem;
+      color: white;
+      opacity: 0;
+      transition: all 0.2s ease;
+    }
+    
+    .option-container input[type="checkbox"]:checked ~ .option-checkbox {
+      background-color: #4A90E2;
+      border-color: #4A90E2;
+    }
+    
+    .option-container input[type="checkbox"]:checked ~ .option-checkbox::after {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    
+    .option-container input[type="checkbox"]:checked ~ .option-label {
+      color: #303133;
+    }
+    
+    .option-container.option-selected {
+      border-color: rgba(74, 144, 226, 0.7);
+      background-color: rgba(74, 144, 226, 0.05);
+    }
+    
+    .option-hint {
+      font-size: 0.75rem;
+      color: #909399;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      margin-left: auto;
+    }
+    
+    .option-container:hover .option-hint {
+      opacity: 1;
+    }
+    
+    /* 提示信息样式 */
+    .hint {
+      font-size: 0.875rem;
+      color: #909399;
+      margin-top: 1rem;
+    }
+    
+    .hint i {
+      margin-right: 0.25rem;
+    }
+    
+    /* 按钮样式 */
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .btn-prev {
+      background-color: white;
+      border: 1px solid #E4E7ED;
+      color: #606266;
+    }
+    
+    .btn-prev:hover {
+      background-color: #F5F7FA;
+    }
+    
+    .btn-next {
+      background-color: #4A90E2;
+      color: white;
+      border: none;
+    }
+    
+    .btn-next:hover {
+      background-color: rgba(74, 144, 226, 0.9);
+    }
+    
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    
+    /* 结果样式 */
+    .option-correct {
+      border-color: rgba(92, 184, 92, 0.7) !important;
+      background-color: rgba(92, 184, 92, 0.05) !important;
+    }
+    
+    .option-correct .option-checkbox {
+      background-color: #5CB85C !important;
+      border-color: #5CB85C !important;
+    }
+    
+    .option-wrong {
+      border-color: rgba(217, 83, 79, 0.7) !important;
+      background-color: rgba(217, 83, 79, 0.05) !important;
+    }
+    
+    .option-wrong .option-checkbox {
+      background-color: #D9534F !important;
+      border-color: #D9534F !important;
+    }
+    
+    /* 响应式设计 */
+    @media (max-width: 600px) {
+      .btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+      }
+      
+      .option-container {
+        padding: 0.75rem;
+      }
+      
+      .question-card {
+        padding: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 标题和进度条 -->
+    <div class="progress-bar">
+      <h1 class="quiz-title">知识测试</h1>
+      <div class="progress-bar__text">第3题 / 共10题</div>
+      <div class="progress-bar__track">
+        <div class="progress-bar__fill" style="width: 30%"></div>
+      </div>
+    </div>
+    
+    <!-- 题目卡片 -->
+    <div class="question-card">
+      <div class="flex items-start gap-1 mb-3">
+        <span class="question-type">多选题</span>
+        <h2 class="question-text">以下哪些属于中国的传统节日？</h2>
+      </div>
+      
+      <!-- 选项列表 -->
+      <ol class="options">
+        <li class="option-container">
+          <input type="checkbox" name="options" id="inputA" data-key="A">
+          <span class="option-checkbox"></span>
+          <span class="option-label">A. 春节</span>
+          <span class="option-hint">点击选择</span>
+        </li>
+        
+        <li class="option-container">
+          <input type="checkbox" name="options" id="inputB" data-key="B">
+          <span class="option-checkbox"></span>
+          <span class="option-label">B. 圣诞节</span>
+          <span class="option-hint">点击选择</span>
+        </li>
+        
+        <li class="option-container">
+          <input type="checkbox" name="options" id="inputC" data-key="C">
+          <span class="option-checkbox"></span>
+          <span class="option-label">C. 端午节</span>
+          <span class="option-hint">点击选择</span>
+        </li>
+        
+        <li class="option-container">
+          <input type="checkbox" name="options" id="inputD" data-key="D">
+          <span class="option-checkbox"></span>
+          <span class="option-label">D. 清明节</span>
+          <span class="option-hint">点击选择</span>
+        </li>
+        
+        <li class="option-container">
+          <input type="checkbox" name="options" id="inputE" data-key="E">
+          <span class="option-checkbox"></span>
+          <span class="option-label">E. 情人节</span>
+          <span class="option-hint">点击选择</span>
+        </li>
+      </ol>
+      
+      <!-- 提示信息 -->
+      <div class="hint">
+        <i class="fa fa-info-circle"></i> 多选题，至少选择一个答案
+      </div>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="buttons">
+      <button class="btn btn-prev">
+        <i class="fa fa-arrow-left mr-2"></i> 上一题
+      </button>
+      <button id="submitBtn" class="btn btn-next">
+        下一题 <i class="fa fa-arrow-right ml-2"></i>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // 初始化选项交互
+    document.addEventListener('DOMContentLoaded', function() {
+      const options = document.querySelectorAll('input[name="options"]');
+      const submitBtn = document.getElementById('submitBtn');
+      const optionContainers = document.querySelectorAll('.option-container');
+      
+      // 选项点击事件
+      options.forEach(option => {
+        option.addEventListener('change', function() {
+          const container = this.closest('.option-container');
+          
+          if (this.checked) {
+            container.classList.add('option-selected');
+          } else {
+            container.classList.remove('option-selected');
+          }
+          
+          // 更新提交按钮状态
+          updateSubmitButton();
+        });
+      });
+      
+      // 更新提交按钮状态
+      function updateSubmitButton() {
+        const selectedCount = document.querySelectorAll('input[name="options"]:checked').length;
+        submitBtn.disabled = selectedCount === 0;
+      }
+      
+      // 初始禁用提交按钮
+      updateSubmitButton();
+      
+      // 提交按钮点击事件
+      submitBtn.addEventListener('click', function() {
+        if (!this.disabled) {
+          // 模拟提交答案
+          const selectedOptions = document.querySelectorAll('input[name="options"]:checked');
+          const selectedKeys = Array.from(selectedOptions).map(opt => opt.dataset.key);
+          console.log('提交答案:', selectedKeys);
+          
+          // 显示结果（实际应用中应该从服务器获取结果）
+          showResult(selectedKeys);
+        }
+      });
+      
+      // 显示答题结果
+      function showResult(selectedKeys) {
+        const correctKeys = ['A', 'C', 'D']; // 假设正确答案是A、C、D
+        
+        // 禁用所有选项
+        options.forEach(opt => {
+          opt.disabled = true;
+        });
+        
+        // 高亮正确答案
+        document.querySelectorAll('input[name="options"]').forEach(opt => {
+          const container = opt.closest('.option-container');
+          
+          if (correctKeys.includes(opt.dataset.key)) {
+            // 正确答案
+            container.classList.add('option-correct');
+          } else if (selectedKeys.includes(opt.dataset.key)) {
+            // 错误选择
+            container.classList.add('option-wrong');
+          }
+        });
+        
+        // 修改提交按钮为查看解析
+        submitBtn.innerHTML = '查看解析 <i class="fa fa-angle-right ml-2"></i>';
+        submitBtn.onclick = function() {
+          alert('正确答案：A、C、D\n\n解析：春节、端午节、清明节是中国的传统节日，而圣诞节和情人节是西方节日。');
+        };
+      }
+    });
+  </script>
+</body>
+</html>

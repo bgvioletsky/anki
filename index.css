@@ -1,0 +1,160 @@
+
+/* 定义基础缩进单位 */
+:root {
+  --indent-base: 15px; /* 默认缩进值 */
+  font-family: "公众号-犬神志";
+}
+
+
+/* 响应式设计：使用媒体查询调整基础缩进值 */
+@media (max-width: 599px) {
+  :root {
+    --indent-base: 10px; /* 小屏幕设备 */
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --indent-base: 20px; /* 大屏幕设备 */
+  }
+}
+
+.card {
+  font-family: "公众号-犬神志";
+  font-size: 2rem;
+  text-align: center;
+  color: black;
+  background-color: #e5e5e5;
+  margin: 0;
+  padding: 0;
+}
+.deck-info {
+  left: 1rem;
+  position: fixed;
+  top: 1.5rem;
+  z-index: 999;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 4px 3px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: "公众号-犬神志";
+}
+.kz0{
+    font-family: "公众号-犬神志";
+    font-size: 1rem ;
+    color: #2c7ad6;
+    padding: 0;
+    margin: 0;
+}
+.kz1{
+    font-family: "公众号-犬神志";
+    font-size: 0.9rem ;
+    padding: 0;
+    color: #e67e22;
+    margin-left:1rem;
+}
+.kz2{
+    font-family: "公众号-犬神志";
+    font-size: 0.8rem ;
+    padding: 0;
+    color: #e74c3c;
+    margin-left:1.5rem;
+}
+.kz3{
+    font-family: "公众号-犬神志";
+    font-size: 0.7rem ;
+    padding: 0;
+    color: #e74c3c;
+    margin-left:2rem;
+}
+/* 倒计时器核心样式 - 固定在右上角 */
+.countdown-container {
+  position: fixed;
+  right: 1rem;
+  top: 1.5rem;
+  z-index: 999;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 2px 3px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: "公众号-犬神志";
+  min-width: 9rem;
+}
+/* 倒计时文字样式 */
+.countdown-text {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.2rem;
+}
+/* 数字样式 - 突出显示 */
+.countdown-digits {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.countdown-unit {
+  text-align: center;
+}
+
+.countdown-number {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2c7ad6;
+  /* 蓝色突出数字 */
+}
+
+.countdown-label {
+  font-size: 1rem;
+  color: #888;
+}
+
+/* 秒数特殊颜色强调 */
+.countdown-number.seconds {
+  color: #e67e22;
+  /* 橙色强调秒数 */
+}
+
+/* 考试结束状态 */
+.countdown-ended {
+  font-size: 14px;
+  color: #e74c3c;
+  font-weight: bold;
+  text-align: center;
+}
+
+.container {
+  margin: 0 auto;
+  border-radius: 0.75rem;
+  padding: 5px;
+  background-color: #67f3f3;
+}
+.timu {
+  margin: 7rem 0rem 0rem 1rem;
+  padding: 0rem 1rem;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  border-radius: 0.75rem;
+}
+.main {
+  margin-right: 1.5rem;
+  margin-left: 1.5rem;
+  margin-top: 0px;
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+}
+
+.test {
+  margin-top: 0.5rem;
+  background-color: #fefedf;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 0.5rem;
+}
+
+
+
+

@@ -1,0 +1,106 @@
+<script>
+		initOptions();
+    if (!window.gData) {
+        window.gData = {
+            clickedValues: [],
+            total: 0,
+            correct: 0,
+            score: 0,
+            sum: 0,
+            list: '',
+            correctanswer: [],
+            rsltanswer: []
+        }
+    }
+    var gData = window.gData;
+    function initOptions() {
+        var optionList = document.getElementById("optionList"),
+            classify = document.getElementById("classify"),
+            options = document.getElementById("options"),
+            answer = document.getElementById("answer");
+        var correctanswer = answer.innerText.toUpperCase().match(/[A-Fa-f]/g);
+        correctanswer.length > 1 && (classify.innerText = "多选题：");
+        gData.correctanswer=correctanswer;
+        options = options.innerHTML,
+            options = options.replace(/<\/?div>/g, "\n"),
+            options = options.replace(/\n+/g, "\n"),
+            options = options.replace(/<br.*?>/g, "\n"),
+            options = options.replace(/^\n/, ""),
+            options = options.replace(/\n$/, ""),
+            options = options.split(/(\n|\r\n)/g).filter(function(e) {
+                return "\n" !== e && "\r\n" !== e && "" !== e
+            }) || [];
+        var indexs = [];// 存随机数的
+        gData.rsltanswer=[];//重置，此参数为乱序后的正确答案
+        gData.clickedValues=[];
+        for(var key=0;key<options.length;key++){
+            // var randomNum=getRandomNum(indexs,options.length); //随机
+            var randomNum=key; //不要随机了
+            var li ='';
+            if(correctanswer.indexOf(String.fromCharCode(randomNum + 65)) != -1){
+                gData.rsltanswer.push(String.fromCharCode(key + 65));
+                li=getLiElement(options[randomNum],String.fromCharCode(key + 65),"optionTrue")
+            }else{
+                li=getLiElement(options[randomNum],String.fromCharCode(key + 65),"optionFalse")
+            }
+            optionList.appendChild(li);
+        }
+        gData.list=optionList.innerHTML;
+        gData.total++;
+    }
+
+    function getRandomNum(indexs,number) {
+        var num;
+        do {
+            num = Math.random() * number;
+            num = Math.floor(num);
+            if (indexs.join().indexOf(num.toString()) == -1) {
+                indexs.push(num);
+                break;
+            }
+        } while (true)
+        return num;
+    }
+
+    // 点击选项事件
+    function choice(li){
+        var key = li.getAttribute("id");
+        var input = document.getElementById("input"+key);
+        var inputType = input.getAttribute("type");
+        input.checked=!input.checked;
+        if("checkbox" == inputType){
+            let delIndex =gData.clickedValues.indexOf(key);
+            if(delIndex != -1){
+                gData.clickedValues.splice(delIndex,1);
+            }else{
+                gData.clickedValues.push(key);
+            }
+        }else{
+            gData.clickedValues=[];
+            gData.clickedValues.push(key);
+        }
+    }
+
+    // 创建li选项，key=第几个答案选项
+    function getLiElement(value,key,liClass) {
+        var liElement = document.createElement("li"),
+            inputElement = document.createElement("input"),
+            labelElement = document.createElement("label");
+        inputElement.setAttribute("type", 1 === gData.correctanswer.length ? "radio": "checkbox");
+        inputElement.setAttribute("name", "options");
+        inputElement.setAttribute("id", "input"+key);
+        labelElement.innerHTML=value;
+        liElement.appendChild(inputElement);
+        liElement.appendChild(labelElement);
+        liElement.setAttribute("class", liClass);
+        liElement.setAttribute("id", key);
+        liElement.setAttribute("onclick", "choice(this)");
+        return liElement;
+    }
+    function checkAnswer(arr1,arr2) {
+        if(arr1.length != arr2.length)return false;
+        if(arr2.sort().toString() != arr1.sort().toString()) return false;
+        return true;
+    }
+</script>
+
