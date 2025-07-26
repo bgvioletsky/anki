@@ -1,106 +1,65 @@
-<script>
-		initOptions();
-    if (!window.gData) {
-        window.gData = {
-            clickedValues: [],
-            total: 0,
-            correct: 0,
-            score: 0,
-            sum: 0,
-            list: '',
-            correctanswer: [],
-            rsltanswer: []
+/*
+ * @Author: bgcode
+ * @Date: 2025-07-19 10:41:58
+ * @LastEditTime: 2025-07-26 20:03:48
+ * @LastEditors: bgcode
+ * @Description: 描述
+ * @FilePath: /anki/index.js
+ * 本项目采用GPL 许可证，欢迎任何人使用、修改和分发。
+ */
+
+function formatDeckName() {
+    const deckInfo =  document.getElementById("deck-info");
+    if (!deckInfo || !deckInfo.textContent.includes('::')) return deckInfo.innerHTML = '<div class="deck-info-text">卡组:</div><div class="deck-container">' + 
+        `<div class="kz0">${deckInfo.textContent}</div>`+'</div>'; 
+
+    // 分割卡组层级并添加缩进
+    const parts = deckInfo.textContent.replace('卡组: ', '').split('::');
+    deckInfo.innerHTML = '<div class="deck-info-text">卡组:</div><div class="deck-container">' + parts.map((part, index) =>
+        `<div class="kz${index}">${part}</div>`
+    ).join('')+'</div>';
+}
+
+// 确保在DOM加载完成后执行
+if (document.readyState !== 'loading') {
+    formatDeckName();
+} else {
+    document.addEventListener('DOMContentLoaded', formatDeckName);
+}
+
+function time(endTime) {
+        var nowtime = new Date();
+        var endtime = new Date(endTime);
+        var lefttime = parseInt((endtime.getTime() - nowtime.getTime()) / 1000);
+        var d = parseInt(lefttime / (24*60*60))
+        var h = parseInt(lefttime / (60 * 60) % 24);
+        var m = parseInt(lefttime / 60 % 60);
+        var s = parseInt(lefttime % 60);
+        d = d < 10 ? "0" + d: d + ""
+        h = h < 10 ? "0" + h: h + ""
+        m = m < 10 ? "0" + m: m + ""
+        s = s < 10 ? "0" + s: s + ""
+        document.getElementById("time").innerHTML = `<p class="djs">考试倒计时:</p>
+        <div class="time-container">
+        <div class="time-unit">
+            <div class="time-number">${d}</div>
+            <div class="time-label">天</div>
+        </div>
+        <div class="time-unit">
+            <div class="time-number">${h}</div>
+            <div class="time-label">时</div>
+        </div>
+        <div class="time-unit">
+            <div class="time-number">${m}</div>
+            <div class="time-label">分</div>
+        </div>
+        <div class="time-unit">
+            <div class="time-number seconds">${s}</div>
+            <div class="time-label">秒</div>
+        </div></div>`;
+        if (lefttime <= 0) {
+            document.getElementById("time").innerHTML = `<p class="js">考试已结束</p>`
+            return;
         }
+        setTimeout(function(){time(endTime)}, 1000);
     }
-    var gData = window.gData;
-    function initOptions() {
-        var optionList = document.getElementById("optionList"),
-            classify = document.getElementById("classify"),
-            options = document.getElementById("options"),
-            answer = document.getElementById("answer");
-        var correctanswer = answer.innerText.toUpperCase().match(/[A-Fa-f]/g);
-        correctanswer.length > 1 && (classify.innerText = "多选题：");
-        gData.correctanswer=correctanswer;
-        options = options.innerHTML,
-            options = options.replace(/<\/?div>/g, "\n"),
-            options = options.replace(/\n+/g, "\n"),
-            options = options.replace(/<br.*?>/g, "\n"),
-            options = options.replace(/^\n/, ""),
-            options = options.replace(/\n$/, ""),
-            options = options.split(/(\n|\r\n)/g).filter(function(e) {
-                return "\n" !== e && "\r\n" !== e && "" !== e
-            }) || [];
-        var indexs = [];// 存随机数的
-        gData.rsltanswer=[];//重置，此参数为乱序后的正确答案
-        gData.clickedValues=[];
-        for(var key=0;key<options.length;key++){
-            // var randomNum=getRandomNum(indexs,options.length); //随机
-            var randomNum=key; //不要随机了
-            var li ='';
-            if(correctanswer.indexOf(String.fromCharCode(randomNum + 65)) != -1){
-                gData.rsltanswer.push(String.fromCharCode(key + 65));
-                li=getLiElement(options[randomNum],String.fromCharCode(key + 65),"optionTrue")
-            }else{
-                li=getLiElement(options[randomNum],String.fromCharCode(key + 65),"optionFalse")
-            }
-            optionList.appendChild(li);
-        }
-        gData.list=optionList.innerHTML;
-        gData.total++;
-    }
-
-    function getRandomNum(indexs,number) {
-        var num;
-        do {
-            num = Math.random() * number;
-            num = Math.floor(num);
-            if (indexs.join().indexOf(num.toString()) == -1) {
-                indexs.push(num);
-                break;
-            }
-        } while (true)
-        return num;
-    }
-
-    // 点击选项事件
-    function choice(li){
-        var key = li.getAttribute("id");
-        var input = document.getElementById("input"+key);
-        var inputType = input.getAttribute("type");
-        input.checked=!input.checked;
-        if("checkbox" == inputType){
-            let delIndex =gData.clickedValues.indexOf(key);
-            if(delIndex != -1){
-                gData.clickedValues.splice(delIndex,1);
-            }else{
-                gData.clickedValues.push(key);
-            }
-        }else{
-            gData.clickedValues=[];
-            gData.clickedValues.push(key);
-        }
-    }
-
-    // 创建li选项，key=第几个答案选项
-    function getLiElement(value,key,liClass) {
-        var liElement = document.createElement("li"),
-            inputElement = document.createElement("input"),
-            labelElement = document.createElement("label");
-        inputElement.setAttribute("type", 1 === gData.correctanswer.length ? "radio": "checkbox");
-        inputElement.setAttribute("name", "options");
-        inputElement.setAttribute("id", "input"+key);
-        labelElement.innerHTML=value;
-        liElement.appendChild(inputElement);
-        liElement.appendChild(labelElement);
-        liElement.setAttribute("class", liClass);
-        liElement.setAttribute("id", key);
-        liElement.setAttribute("onclick", "choice(this)");
-        return liElement;
-    }
-    function checkAnswer(arr1,arr2) {
-        if(arr1.length != arr2.length)return false;
-        if(arr2.sort().toString() != arr1.sort().toString()) return false;
-        return true;
-    }
-</script>
-
