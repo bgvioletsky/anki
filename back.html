@@ -1,10 +1,10 @@
 <!--
  * @Author: bgcode
- * @Date: 2025-07-19 13:24:09
- * @LastEditTime: 2025-07-27 19:50:15
+ * @Date: 2025-07-27 19:47:33
+ * @LastEditTime: 2025-07-27 19:49:29
  * @LastEditors: bgcode
  * @Description: 描述
- * @FilePath: /anki/index.html
+ * @FilePath: /anki/back.html
  * 本项目采用GPL 许可证，欢迎任何人使用、修改和分发。
 -->
 <html>
@@ -28,10 +28,17 @@
       <div class="text" id="text">单选题</div>
       <div class="timu">谁是世界上最帅的人</div>
       <div class="choose" id="choose"></div>
-      <div class="options" id="options" style="display: none;"> {{options}}</div>
-      <div class="answer" id="answer" style="display: none;"> {{answer}} </div>
       <div class="analyse" style="display: none;">{{analyse}}</div>
       <div class="category" id="category" style="display: none;">1</div>
+      <hr>
+      <div class="ruselt">
+        <span id="result" class="cloze sformat"></span>
+        <span class="cloze sformat">正确答案：<b id="key"></b></span>
+        <span class="cloze sformat">你的答案：<b id="yourkey"></b></span>
+      </div>
+      <div id="performance"> 正确率：100%</div><br>
+      <div class="analyze">解析:{{Analyze}}</div>
+    </div>
   </div>
 </body>
 

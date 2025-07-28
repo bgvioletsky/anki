@@ -1,16 +1,45 @@
 /* 定义基础缩进单位 */
+
 :root {
   --indent-base: 15px; /* 默认缩进值 */
-  font-family: "test";
+  --color-background: #e9eef7;
+  font-family: "bgcode";
+  --color-text-primary: #000;
+  --color-text-secondary: #868ea8;
+  --color-text-option: #f5f7fa;
+  --color-text-option-active: #3c7cfc;
+  --color-text-option-collected: #ffbc22;
+  --color-text-icon: #3c464f;
+  --color-text-icon-hover: #3c7cfc;
+  --color-text-setting: #bcbfcc;
+  --color-text-setting-active: #1b2126;
+  --color-text-blue: #4775fe;
+  --color-text-blue-standard: #3c7cfc;
+  --color-text-choice: #868ea8;
+  --color-text-choice-active: #fff;
+  --color-text-choice-correct: #2bc8a0;
+  --color-text-choice-wrong: #ff5a5a;
+  --color-text-textarea-placeholder: #c0c2ce;
+  --color-text-input-placeholder: #9ea1b2;
+  --color-text-num-total: #cfd1dc;
+  --color-text-num-cur: #868ea8;
+  --color-text-info: #3c7bfc;
+  --color-text-index: #fff;
+  --color-text-draft: rgba(255, 255, 255, 0.6);
+  --color-text-draft-hover: rgba(255, 255, 255, 0.8);
+  --color-text-modal-active: #fff;
+  --color-text-label-correct: #00c894;
 }
 @font-face {
-  font-family: "test";
-  src: url("https://cdn.jsdelivr.net/gh/bgvioletsky/anki@0.0.1/font/bgcode.woff2")
-      format("woff2"),
-    url("https://cdn.jsdelivr.net/gh/bgvioletsky/anki@0.0.1/font/bgcode.woff")
-      format("woff");
-}
-
+  font-family: "bgcode"; 
+  src: url('font/bgcode.ttf'); 
+} 
+/* 字体添加在mac中添加字体到卡组，先进入访达，点击上方顶部导航栏中的前往，输入 ~/Library/Application Support/Anki2  打开其中账户文件夹再打开collection.media文件夹，将字体文件放入其中修改名字在名字前加上_ 例如_bgcode.tts，然后
+@font-face {
+  font-family: "bgcode"; 
+  src: url('_bgcode.ttf'); 
+} 
+  */
 /* 响应式设计：使用媒体查询调整基础缩进值 */
 @media (max-width: 599px) {
   :root {
@@ -25,14 +54,14 @@
 }
 
 * {
-  font-family: "test";
+  font-family: "b g co de";
   color: black;
   background-color: aliceblue;
   margin: 0;
   padding: 0;
 }
 .container {
-  font-family: "test";
+  font-family: "bgcode";
   margin: 3rem 2rem;
   height: 80vh;
   display: flex;
@@ -57,7 +86,7 @@
   font-size: 0.8rem;
   color: #888;
 }
-.time-container{
+.time-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -84,57 +113,102 @@
 .time-number.seconds {
   color: #e67e22;
 }
-#deck-info{
+#deck-info {
   background-color: azure;
   border-radius: 2rem;
   margin: 1rem;
 }
-.deck-info-text{
+.deck-info-text {
   font-size: 0.8rem;
   color: #888;
 }
-.deck-container{
-   display: flex;
-  flex-direction:row;
+.deck-container {
+  display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   padding: 0.6rem;
   border-radius: 0.8rem;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
 }
-.kz0{
+.kz0 {
   font-size: 0.8rem;
   color: #2c7ad6;
 }
-.kz1{
+.kz1 {
   font-size: 0.7rem;
-  margin:0  0 0 0.3rem;
+  margin: 0 0 0 0.3rem;
   color: #2c7ad6;
 }
-.kz2{
+.kz2 {
   font-size: 0.6rem;
-  margin:0  0 0 0.3rem;
+  margin: 0 0 0 0.3rem;
   color: #e67e22;
 }
-.kz2{
+.kz2 {
   font-size: 0.6rem;
-  margin:0  0 0 0.3rem;
+  margin: 0 0 0 0.3rem;
   color: #e67e22;
 }
-.js{
+.js {
   font-size: 1.4rem;
   color: #2c7ad6;
 }
-.content{
+.content {
   /* background-color: aqua; */
-  height: 80vh;
-
-}
-.timu {
-  margin: 1rem 1rem 0rem 1rem;
-  padding: 0.3rem 0.5rem;
+  min-height: 43vh;
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   border-radius: 0.65rem;
+}
+.timu {
+  margin: 0.5rem 2rem 0rem 1rem;
+  padding: 0.3rem 0.5rem;
+  /* box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+  border-radius: 0.65rem;
   text-align: left;
-  font-size:1.3rem
+  font-size: 1.3rem;
+}
+.text {
+  margin: 0.3rem 2rem 0rem 1rem;
+  font-size: 1rem;
+  color: #888;
+}
+.answer {
+  margin: 2rem 2rem 0rem 1rem;
+}
+.choose { 
+  margin: 1rem 2rem 0rem 1.2rem;
+}
+.options-list {
+  margin: 0.3rem 0.3rem 0.3rem 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+}
+.options-list > p {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--color-background);
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  text-align: center;
+  color: #868ea8;
+  border: #e9eef7 solid 0.1rem;
+  margin: 0 1rem 0 0;
+}
+
+
+.options-list.selected p {
+  background-color: var(--color-text-blue-standard);
+  color: white;
+  border-color:var(--color-text-blue-standard);
+  position: relative;
+}
+
+.classify{
+  margin: 1rem 0;
 }
