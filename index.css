@@ -1,39 +1,13 @@
 /* 定义基础缩进单位 */
 
 :root {
-  --indent-base: 15px; /* 默认缩进值 */
-  --color-background: #e9eef7;
+  --background: #e9eef7;
   font-family: "bgcode";
-  --color-text-primary: #000;
-  --color-text-secondary: #868ea8;
-  --color-text-option: #f5f7fa;
-  --color-text-option-active: #3c7cfc;
-  --color-text-option-collected: #ffbc22;
-  --color-text-icon: #3c464f;
-  --color-text-icon-hover: #3c7cfc;
-  --color-text-setting: #bcbfcc;
-  --color-text-setting-active: #1b2126;
-  --color-text-blue: #4775fe;
-  --color-text-blue-standard: #3c7cfc;
-  --color-text-choice: #868ea8;
-  --color-text-choice-active: #fff;
-  --color-text-choice-correct: #2bc8a0;
-  --color-text-choice-wrong: #ff5a5a;
-  --color-text-textarea-placeholder: #c0c2ce;
-  --color-text-input-placeholder: #9ea1b2;
-  --color-text-num-total: #cfd1dc;
-  --color-text-num-cur: #868ea8;
-  --color-text-info: #3c7bfc;
-  --color-text-index: #fff;
-  --color-text-draft: rgba(255, 255, 255, 0.6);
-  --color-text-draft-hover: rgba(255, 255, 255, 0.8);
-  --color-text-modal-active: #fff;
-  --color-text-label-correct: #00c894;
 }
 @font-face {
-  font-family: "bgcode"; 
-  src: url('font/bgcode.ttf'); 
-} 
+  font-family: "bgcode";
+  src: url("font/bgcode.ttf");
+}
 /* 字体添加在mac中添加字体到卡组，先进入访达，点击上方顶部导航栏中的前往，输入 ~/Library/Application Support/Anki2  打开其中账户文件夹再打开collection.media文件夹，将字体文件放入其中修改名字在名字前加上_ 例如_bgcode.tts，然后
 @font-face {
   font-family: "bgcode"; 
@@ -176,7 +150,7 @@
 .answer {
   margin: 2rem 2rem 0rem 1rem;
 }
-.choose { 
+.choose {
   margin: 1rem 2rem 0rem 1.2rem;
 }
 .options-list {
@@ -191,7 +165,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: var(--color-background);
+  background-color: var(--background);
   height: 2.5rem;
   width: 2.5rem;
   border-radius: 50%;
@@ -201,14 +175,13 @@
   margin: 0 1rem 0 0;
 }
 
-
 .options-list.selected p {
-  background-color: var(--color-text-blue-standard);
+  background-color: #2385f4;
   color: white;
-  border-color:var(--color-text-blue-standard);
+  border-color: #2385f4;
   position: relative;
 }
 
-.classify{
+.classify {
   margin: 1rem 0;
 }
