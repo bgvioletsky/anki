@@ -1,7 +1,7 @@
 /*
  * @Author: bgcode
  * @Date: 2025-07-19 10:41:58
- * @LastEditTime: 2025-07-27 20:30:49
+ * @LastEditTime: 2025-07-29 21:52:50
  * @LastEditors: bgcode
  * @Description: 描述
  * @FilePath: /anki/index.js
@@ -80,13 +80,22 @@ function formatDeckName() {
 
                     }
                     choose.innerHTML = optionsList;
-                    gData.optionsList = optionsList.replace(/onclick.*"/g,"");
+                    gData.optionsList = optionsList.replace("choose_options","checkArrayEquality");
                     gData.clickedValuesIndex=sx
                     gData.correctanswer = ssss;
                     gData.total++
                 }
                 if(result){
                     choose.innerHTML = gData.optionsList;
+if (checkAnswer(gData.clickedValues, gData.correctanswer)) {
+            gData.correct++;
+            result.innerHTML = "回答正确！！！";
+            Persistence.setItem(gData);
+        } else {
+            yourkey.classList.add("wrong");
+            result.classList.add("wrong");
+            result.innerHTML = "很遗憾，回答错误";
+        }
                 }
                 break;
             case "2":
@@ -179,6 +188,20 @@ function random(length) {
     }
 
     return indexArray;
+}
+function checkArrayEquality() {
+    const ruselt = document.getElementById('ruselt');
+    if (ruselt) {
+        if (checkAnswer(gData.clickedValues, gData.correctanswer)) {
+            gData.correct++;
+            result.innerHTML = "回答正确！！！";
+            Persistence.setItem(gData);
+        } else {
+            yourkey.classList.add("wrong");
+            result.classList.add("wrong");
+            result.innerHTML = "很遗憾，回答错误";
+        }
+    }
 }
 /**
  * 检查两个数组是否包含相同的元素（不考虑元素顺序）

@@ -1,7 +1,7 @@
 <!--
  * @Author: bgcode
  * @Date: 2025-07-19 13:24:09
- * @LastEditTime: 2025-07-27 19:50:15
+ * @LastEditTime: 2025-07-29 21:51:38
  * @LastEditors: bgcode
  * @Description: 描述
  * @FilePath: /anki/index.html
@@ -19,26 +19,28 @@
 </head>
 
 <body>
-  <div class="container">
+ <div class="container">
     <div class="head">
-      <div id="deck-info">{{Deck}}::</div>
+      <div id="deck-info">{{Deck}}</div>
       <div id="time"></div>
     </div>
     <div class="content" id="content">
       <div class="text" id="text">单选题</div>
       <div class="timu">谁是世界上最帅的人</div>
       <div class="choose" id="choose"></div>
-      <div class="options" id="options" style="display: none;"> {{options}}</div>
-      <div class="answer" id="answer" style="display: none;"> {{answer}} </div>
-      <div class="analyse" style="display: none;">{{analyse}}</div>
-      <div class="category" id="category" style="display: none;">1</div>
+      <div class="options" id="options" style="display: none;">{{Options}}</div>
+      <div class="answer" id="answer" style="display: none;"> {{Answer}} </div>
+      <div class="analyse" style="display: none;">{{Analyze}}</div>
+      <div class="category" id="category" style="display: none;">{{Category}}</div>
+    
+    </div>
   </div>
-</body>
 
 <script>
   // 设置目标日期
   var endTime = "2025/08/29 00:00:00";
-  time(endTime);
+	time(endTime);
+
 </script>
 
 </html>
